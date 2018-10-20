@@ -4,35 +4,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analizador_Sintactito_LL1
+namespace Analizador_Sintactico_LL1
 {
     class Regla
     {
         private string ladoDerecho;
         private string ladoIzquierdo;
 
-        public Regla(string ladoDerecho, string ladoIzquierdo)
+        public Regla(string ladoIzquierdo, string ladoDerecho)
         {
             this.ladoDerecho = ladoDerecho;
             this.ladoIzquierdo = ladoIzquierdo;
         }
 
-        public string getLadoDerecho()
+        public string GetLadoDerecho()
         {
             return this.ladoDerecho;
         }
 
-        public void setLadoDerecho(string ladoDer)
+        public void SetLadoDerecho(string ladoDer)
         {
             this.ladoDerecho = ladoDer;
         }
 
-        public string getLadoIzquierdo()
+        public string GetLadoIzquierdo()
         {
             return this.ladoIzquierdo;
         }
 
-        public void setLadoIzquierdo(string ladoIzq)
+        public void SetLadoIzquierdo(string ladoIzq)
         {
             this.ladoIzquierdo = ladoIzq;
         }

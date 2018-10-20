@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Analizador_Sintactito_LL1
+namespace Analizador_Sintactico_LL1
 {
     class Program
     {
@@ -58,7 +58,7 @@ namespace Analizador_Sintactito_LL1
             noTerminales.Add("D");
 
             tabla = new string[noTerminales.Count + 1, terminales.Count + 2];
-
+            RellenarTabla();
         }
 
         public void MostrarMatriz()
@@ -100,17 +100,87 @@ namespace Analizador_Sintactito_LL1
                         Console.WriteLine(noTerminales[noTerm] + "  ");
                         noTerm++;
                     }
-                   
                 }
             }
         }
 
-        public 
-
         public void RellenarTabla()
         {
+            List<string> prim = new List<string>();
+            List<string> noTerminalesPrimeros = new List<string>();
+            List<string> noTerminalesSiguientes = new List<string>();
+            List<string> listaDeLosSiguientes = new List<string>();
 
+            foreach (string primero in primeros)
+            {
+                string p = primero.Substring(3, primero.Length - 3);
+                string noTermPrimeros = primero.Substring(0,1);
+                prim.Add(p);
+                noTerminalesPrimeros.Add(noTermPrimeros);
+            }
+
+            foreach (string siguiente in siguientes)
+            {
+                string s = siguiente.Substring(0, 1);
+                string noTermSiguientes = siguiente.Substring(3, siguiente.Length - 3);
+                noTerminalesSiguientes.Add(s);
+                listaDeLosSiguientes.Add(noTermSiguientes);
+            }
+
+
+            foreach (Regla regla in reglas)
+            {
+                if (regla.GetLadoDerecho()[0].Equals('€'))
+                {
+
+                }
+                else if (regla.GetLadoDerecho()[0].ToString().Equals(regla.GetLadoDerecho()[0].ToString().ToUpper()))
+                {
+                    for (int i = 0; i < noTerminalesPrimeros.Count; i++)
+                    {
+                        if (noTerminalesPrimeros[i].Equals(regla.GetLadoDerecho()[0].ToString()))
+                        {
+                            string[] elementosPrimeros = prim[i].Split(',');
+
+                            for (int j = 0; j < elementosPrimeros.Length; j++)
+                            {
+                                if (elementosPrimeros[j].Equals("€"))
+                                {
+                                    for (int k = 0; k < noTerminalesSiguientes.Count; k++)
+                                    {
+                                        if (regla.GetLadoDerecho()[0].ToString().Equals(noTerminalesSiguientes[k]))
+                                        {
+                                            string[] elementosSiguientes = listaDeLosSiguientes[k].Split(',');
+
+                                            for (int l = 0; l < elementosSiguientes.Length; l++)
+                                            {
+                                                for (int m = 1; m < tabla.GetLength(1); m++)
+                                                {
+                                                    if (elementosSiguientes[l].Equals(tabla[0, m]))
+                                                    {
+                                                        tabla[k,m] = "€";
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
+                                else
+                                {
+
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+
+                }
+            }
         }
+
+        
 
     }
 }

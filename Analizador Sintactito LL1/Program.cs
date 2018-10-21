@@ -20,7 +20,6 @@ namespace Analizador_Sintactico_LL1
         static void Main(string[] args)
         {
             Program P = new Program();
-            P.MostrarMatriz();
             Console.ReadKey();
         }
 
@@ -58,7 +57,23 @@ namespace Analizador_Sintactico_LL1
             noTerminales.Add("D");
 
             tabla = new string[noTerminales.Count + 1, terminales.Count + 2];
+
+            inicializarTabla();
+            MostrarMatriz();
             RellenarTabla();
+
+            
+        }
+
+        public void inicializarTabla()
+        {
+            for (int i = 0; i < tabla.GetLength(0); i++)
+            {
+                for (int j = 0; j < tabla.GetLength(1); j++)
+                {
+                    tabla[i, j] = "";
+                }
+            }
         }
 
         public void MostrarMatriz()
@@ -74,10 +89,10 @@ namespace Analizador_Sintactico_LL1
                 {
                     if (i == 0 && j == 0)
                     {
-                        Console.Write("  ");
+                        Console.Write(" ");
                     }
 
-                    if (i == 0 && j >= 1)
+                    else if (i == 0 && j >= 1)
                     {
                         if (contador == terminales.Count)
                         {
@@ -90,16 +105,22 @@ namespace Analizador_Sintactico_LL1
                             {
                                 tabla[i, j] = terminales[contador].ToString();
                                 contador++;
-                                Console.Write(tabla[i, j] + "  ");
+                                Console.Write(tabla[i, j] + " ");
                             }
                         }
                     }
 
-                    if (i > 0 && j == 0)
+                    else if (i > 0 && j == 0)
                     {
-                        Console.WriteLine(noTerminales[noTerm] + "  ");
+                        tabla[i, j] = noTerminales[noTerm];
+                        Console.WriteLine(noTerminales[noTerm] + " ");
                         noTerm++;
                     }
+                    else
+                    {
+                        Console.Write(tabla[i,j]);
+                    }
+            
                 }
             }
         }
@@ -110,6 +131,9 @@ namespace Analizador_Sintactico_LL1
             List<string> noTerminalesPrimeros = new List<string>();
             List<string> noTerminalesSiguientes = new List<string>();
             List<string> listaDeLosSiguientes = new List<string>();
+
+            int numeroColumna = 0;
+            int numeroFila = 0;
 
             foreach (string primero in primeros)
             {
@@ -136,6 +160,10 @@ namespace Analizador_Sintactico_LL1
                 }
                 else if (regla.GetLadoDerecho()[0].ToString().Equals(regla.GetLadoDerecho()[0].ToString().ToUpper()))
                 {
+                    if (regla.GetLadoDerecho()[0].ToString().Equals("b"))
+                    {
+                        int a = 5;
+                    }
                     for (int i = 0; i < noTerminalesPrimeros.Count; i++)
                     {
                         if (noTerminalesPrimeros[i].Equals(regla.GetLadoDerecho()[0].ToString()))
@@ -159,6 +187,7 @@ namespace Analizador_Sintactico_LL1
                                                     if (elementosSiguientes[l].Equals(tabla[0, m]))
                                                     {
                                                         tabla[k,m] = "€";
+                                                        Console.Write(tabla[k, m]);
                                                     }
                                                 }
                                             }
@@ -167,7 +196,13 @@ namespace Analizador_Sintactico_LL1
                                 }
                                 else
                                 {
-
+                                    for (int n = 1; n < tabla.GetLength(1); n++)
+                                    {
+                                        if (elementosPrimeros[j].ToString().Equals(tabla[0, n].ToString()))
+                                        {
+                                           
+                                        }
+                                    }
                                 }
                             }
                         }
@@ -175,7 +210,29 @@ namespace Analizador_Sintactico_LL1
                 }
                 else
                 {
+                    //Al encontrar un terminal en la produccion busca la posicion  en la tabla que le corresponde 
+                    for (int i = 0; i < tabla.GetLength(0); i++)
+                    {
+                        if (i == 0)
+                        {
+                            for (int j = 1; j < tabla.GetLength(1); j++)
+                            {
+                                if (regla.GetLadoDerecho()[0].ToString().Equals(tabla[0, j]))
+                                {
+                                    numeroColumna = j;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (regla.GetLadoIzquierdo().ToString().Equals(tabla[i, 0]))
+                              {
+                                 numeroFila = i;
+                              }
+                        }
+                    }
 
+                    tabla[numeroFila, numeroColumna] = regla.GetLadoDerecho()[0].ToString();
                 }
             }
         }
